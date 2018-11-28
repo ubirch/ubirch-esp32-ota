@@ -1,0 +1,15 @@
+menu "UBIRCH"
+
+config FIRMWARE_UPGRADE_BASE_URL
+    string "Firmware upgrade base URL"
+    default "https://tarantoga.fritz.box"
+    help
+        Base URL of server which hosts the firmware image.
+
+config FIRMWARE_UPGRADE_FILE
+    string "Project Firmware File"
+    default "firmware.bin"
+    help
+        File name of the firmware update image.
+
+endmenu
