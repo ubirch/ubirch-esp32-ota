@@ -52,9 +52,6 @@ static const char *TAG = "UBIRCH OTA";
 /*an ota data write buffer ready to write to the flash*/
 static char ota_write_data[BUFFSIZE + 1] = {0};
 
-extern const uint8_t ubirch_ota_key_master_pub_start[] asm("_binary_ota_key_master_pub_start");
-extern const uint8_t ubirch_ota_key_master_pub_end[] asm("_binary_ota_key_master_pub_end");
-
 extern const uint8_t ubirch_ota_key_pub_start[] asm("_binary_ota_key_pub_start");
 extern const uint8_t ubirch_ota_key_pub_end[] asm("_binary_ota_key_pub_end");
 
