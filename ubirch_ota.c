@@ -37,7 +37,8 @@
 #include <mbedtls/sha512.h>
 #include <string.h>
 #include <armnacl.h>
-#include "freertos/FreeRTOS.h"
+#include <ubirch_ed25519.h>
+#include <ubirch_protocol.h>
 
 #include "esp_log.h"
 #include "esp_ota_ops.h"
@@ -58,31 +59,10 @@ extern const uint8_t ubirch_ota_key_pub_end[] asm("_binary_ota_key_pub_end");
 extern const uint8_t server_cert_pem_start[] asm("_binary_ota_ca_cert_pem_start");
 extern const uint8_t server_cert_pem_end[] asm("_binary_ota_ca_cert_pem_end");
 
-static int ed25519_verify(const unsigned char *data, size_t len, const unsigned char signature[crypto_sign_BYTES],
-                              const unsigned char public_key[crypto_sign_PUBLICKEYBYTES]) {
-    crypto_uint16 smlen = (crypto_uint16) (crypto_sign_BYTES + len);
-    crypto_uint16 mlen;
-
-    unsigned char *sm = (unsigned char *) malloc(smlen);
-    if (!sm) return -1;
-
-    unsigned char *m = (unsigned char *) malloc(smlen);
-    if (!m) {
-        free(sm);
-        return -1;
-    }
-
-    // initialize signed message structure
-    memcpy(sm, signature, crypto_sign_BYTES);
-    memcpy(sm + crypto_sign_BYTES, data, len);
-
-    // verify signature
-    int ret = crypto_sign_open(m, &mlen, sm, smlen, public_key);
-
-    free(m);
-    free(sm);
-
-    return ret;
+// local implementation of the verification function
+static inline int
+ed25519_verify_ota(const unsigned char *data, size_t len, const unsigned char signature[crypto_sign_BYTES]) {
+    return ed25519_verify_key(data, len, signature, ubirch_ota_key_pub_start);
 }
 
 static void http_cleanup(esp_http_client_handle_t client) {
@@ -170,9 +150,9 @@ esp_err_t ubirch_firmware_upgrade() {
     esp_http_client_fetch_headers(client);
 
     update_partition = esp_ota_get_next_update_partition(NULL);
+    if (!update_partition) return ESP_ERR_OTA_PARTITION_CONFLICT;
     ESP_LOGI(TAG, "Writing to partition subtype %d at offset 0x%x",
              update_partition->subtype, update_partition->address);
-    assert(update_partition != NULL);
 
     err = esp_ota_begin(update_partition, OTA_SIZE_UNKNOWN, &update_handle);
     if (err != ESP_OK) {
@@ -208,7 +188,7 @@ esp_err_t ubirch_firmware_upgrade() {
     mbedtls_sha512_finish(&hash, sha512sum);
     ESP_LOG_BUFFER_HEX(TAG, sha512sum, 64);
 
-    const int vrfy_err = ed25519_verify(sha512sum, 64, signature, ubirch_ota_key_pub_start);
+    const int vrfy_err = ed25519_verify_ota(sha512sum, 64, signature);
     if(vrfy_err != 0) {
         ESP_LOGE(TAG, "firmware signature invalid: %d", vrfy_err);
         http_cleanup(client);

@@ -21,5 +21,6 @@ if (NOT EXISTS "${CA_CERT_FILE}")
 endif ()
 set(COMPONENT_EMBED_TXTFILES "${CA_CERT_FILE} ${UB_OTA_KEY}")
 
-set(COMPONENT_PRIV_REQUIRES esp32 esp_http_client spi_flash nvs_flash bootloader_support app_update ubirch-mbed-nacl-cm0)
+set(COMPONENT_REQUIRES ubirch-protocol)
+set(COMPONENT_PRIV_REQUIRES bootloader_support app_update esp_http_client mbedtls)
 register_component()
