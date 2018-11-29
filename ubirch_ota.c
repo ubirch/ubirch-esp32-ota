@@ -1,8 +1,11 @@
 /*!
  * @file
- * @brief ubirch_ota.h
+ * @brief OTA update procedures and verification.
  *
  * Firmware Upgrade Procedures.
+ * This is an extension of the example OTA code from Espressif
+ * that additionally verifies the Ed25519 signature of the firmware
+ * binary.
  *
  * @author Matthias L. Jugel
  * @date   2018-11-28
@@ -35,18 +38,10 @@
 #include <string.h>
 #include <armnacl.h>
 #include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/event_groups.h"
 
-#include "esp_system.h"
-#include "esp_wifi.h"
-#include "esp_event_loop.h"
 #include "esp_log.h"
 #include "esp_ota_ops.h"
 #include "esp_http_client.h"
-
-#include "nvs.h"
-#include "nvs_flash.h"
 
 #include "ubirch_ota.h"
 
