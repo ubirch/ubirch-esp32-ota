@@ -11,4 +11,4 @@ of downloaded firmware.
 - set up the `ota_ca_cert.pem` and the `ota_key.pub` file to use for verification
 - sign the firmware using the `bin/fw_sign.py` script
 - upload the signed firmware to your update server
-- run the initial firmware and call `ubirch_firmware_upgrade()` to update the firmware
+- run the initial firmware and call `ubirch_firmware_update()` to update the firmware

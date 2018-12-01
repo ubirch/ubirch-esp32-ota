@@ -105,7 +105,7 @@ static esp_err_t fetch_firmware_signature(unsigned char *signature, size_t len) 
     return ESP_FAIL;
 }
 
-esp_err_t ubirch_firmware_upgrade() {
+esp_err_t ubirch_firmware_update() {
     esp_err_t err;
     /* update handle : set by esp_ota_begin(), must be freed via esp_ota_end() */
     esp_ota_handle_t update_handle = 0;

@@ -28,6 +28,6 @@
 
 #include "esp_err.h"
 
-esp_err_t ubirch_firmware_upgrade();
+esp_err_t ubirch_firmware_update();
 
 #endif //UBIRCH_OTA_H
