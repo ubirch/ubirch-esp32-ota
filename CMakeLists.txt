@@ -22,6 +22,6 @@ endif ()
 set(COMPONENT_EMBED_TXTFILES "${CA_CERT_FILE} ${UB_OTA_KEY}")
 
 set(COMPONENT_REQUIRES ubirch-protocol)
-set(COMPONENT_PRIV_REQUIRES bootloader_support app_update esp_http_client mbedtls)
+set(COMPONENT_PRIV_REQUIRES bootloader_support app_update esp_http_client mbedtls nvs_flash)
 register_component()
-component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${PROJECT_NAME}\")
+component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${PROJECT_NAME}.bin\")
