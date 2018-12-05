@@ -2,7 +2,7 @@ set(COMPONENT_SRCS ubirch_ota.c)
 set(COMPONENT_ADD_INCLUDEDIRS ".")
 
 # the certificates directory is expected in the project root directory
-set(PROJECT_CERT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../certificates")
+set(PROJECT_CERT_DIR "${CMAKE_CURRENT_LIST_DIR}/certificates")
 
 # ubirch ota key for verification of the firmware download
 if (CMAKE_BUILD_TYPE MATCHES RELEASE OR CMAKE_BUILD_TYPE MATCHES MINSIZEREL)
@@ -24,3 +24,4 @@ set(COMPONENT_EMBED_TXTFILES "${CA_CERT_FILE} ${UB_OTA_KEY}")
 set(COMPONENT_REQUIRES ubirch-protocol)
 set(COMPONENT_PRIV_REQUIRES bootloader_support app_update esp_http_client mbedtls)
 register_component()
+component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${PROJECT_NAME}\")

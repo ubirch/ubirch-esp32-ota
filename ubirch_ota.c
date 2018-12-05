@@ -48,6 +48,11 @@
 
 #define BUFFSIZE 1024
 
+#if CONFIG_FIRMWARE_FILE_OVERRIDE == 'y'
+#undef UBIRCH_FIRMWARE_FILE
+#define UBIRCH_FIRMWARE_FILE CONFIG_FIRMWARE_UPGRADE_FILE
+#endif
+
 static const char *TAG = "UBIRCH OTA";
 
 /*an ota data write buffer ready to write to the flash*/
@@ -74,7 +79,7 @@ static esp_err_t fetch_firmware_signature(unsigned char *signature, size_t len) 
     esp_err_t err;
 
     esp_http_client_config_t config = {
-            .url = CONFIG_FIRMWARE_UPGRADE_BASE_URL "/" CONFIG_FIRMWARE_UPGRADE_FILE ".sig",
+            .url = CONFIG_FIRMWARE_UPGRADE_BASE_URL "/" UBIRCH_FIRMWARE_FILE ".sig",
             .cert_pem = (char *) server_cert_pem_start,
     };
 
@@ -111,10 +116,17 @@ esp_err_t ubirch_firmware_update() {
     esp_ota_handle_t update_handle = 0;
     const esp_partition_t *update_partition = NULL;
 
-    ESP_LOGI(TAG, "Starting OTA example...");
 
     const esp_partition_t *configured = esp_ota_get_boot_partition();
+    if(!configured) {
+        ESP_LOGE(TAG, "OTA is not configured, flash partition invalid");
+        return ESP_FAIL;
+    }
     const esp_partition_t *running = esp_ota_get_running_partition();
+    if(!running) {
+        ESP_LOGE(TAG, "could not find current running partition");
+        return ESP_FAIL;
+    }
 
     if (configured != running) {
         ESP_LOGW(TAG, "Configured OTA boot partition at offset 0x%08x, but running from offset 0x%08x",
@@ -125,6 +137,8 @@ esp_err_t ubirch_firmware_update() {
     ESP_LOGI(TAG, "Running partition type %d subtype %d (offset 0x%08x)",
              running->type, running->subtype, running->address);
 
+    ESP_LOGI(TAG, "starting OTA: " UBIRCH_FIRMWARE_FILE);
+
     unsigned char signature[64], sha512sum[64];
     fetch_firmware_signature(signature, 64);
 
@@ -133,7 +147,7 @@ esp_err_t ubirch_firmware_update() {
     mbedtls_sha512_starts(&hash, 0);
 
     esp_http_client_config_t config = {
-            .url = CONFIG_FIRMWARE_UPGRADE_BASE_URL "/" CONFIG_FIRMWARE_UPGRADE_FILE,
+            .url = CONFIG_FIRMWARE_UPGRADE_BASE_URL "/" UBIRCH_FIRMWARE_FILE,
             .cert_pem = (char *) server_cert_pem_start,
     };
     esp_http_client_handle_t client = esp_http_client_init(&config);
