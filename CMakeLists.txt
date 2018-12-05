@@ -1,4 +1,4 @@
-set(COMPONENT_SRCS ubirch_ota.c)
+set(COMPONENT_SRCS ubirch_ota.c ubirch_ota_task.c)
 set(COMPONENT_ADD_INCLUDEDIRS ".")
 
 # the certificates directory is expected in the project root directory
