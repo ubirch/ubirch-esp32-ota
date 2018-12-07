@@ -41,6 +41,7 @@ void ubirch_ota_task(void *pvParameters) {
     ESP_LOGI(__func__, "checking firmware every %ds", interval / 1000);
 
     for (;;) {
+        vTaskDelay(interval);
         tcpip_adapter_ip_info_t ip;
         if ((tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_ETH, &ip) == ESP_OK && ip.ip.addr != 0) ||
             (tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ip) == ESP_OK && ip.ip.addr != 0)) {
@@ -50,8 +51,6 @@ void ubirch_ota_task(void *pvParameters) {
         } else {
             ESP_LOGE(__func__, "network not available, skipping firmware update");
         }
-
-        vTaskDelay(interval);
     }
 }
 
