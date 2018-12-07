@@ -6,6 +6,10 @@ config FIRMWARE_UPGRADE_BASE_URL
     help
         Base URL of server which hosts the firmware image.
 
+config FIRMWARE_FILE_OVERRIDE
+	bool "Override project name firmware file name"
+	default no
+
 config FIRMWARE_UPGRADE_FILE
     string "Project Firmware File" if FIRMWARE_FILE_OVERRIDE
     default "dev/firmware.bin"
