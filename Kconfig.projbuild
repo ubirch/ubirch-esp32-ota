@@ -2,17 +2,13 @@ menu "UBIRCH"
 
 config FIRMWARE_UPGRADE_BASE_URL
     string "Firmware upgrade base URL"
-    default "https://ci.tools.ubirch.com/firmware"
+    default "https://fw.prod.ubirch.com"
     help
         Base URL of server which hosts the firmware image.
 
-config FIRMWARE_FILE_OVERRIDE
-	bool "Override project name firmware file name"
-	default no
-
 config FIRMWARE_UPGRADE_FILE
     string "Project Firmware File" if FIRMWARE_FILE_OVERRIDE
-    default "firmware.bin"
+    default "dev/firmware.bin"
     help
         File name of the firmware update image.
 
