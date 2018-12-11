@@ -6,8 +6,10 @@ set(PROJECT_CERT_DIR "${CMAKE_CURRENT_LIST_DIR}/certificates")
 
 # ubirch ota key for verification of the firmware download
 if (CMAKE_BUILD_TYPE MATCHES RELEASE OR CMAKE_BUILD_TYPE MATCHES MINSIZEREL)
+    set(UB_ENV "prod")
     set(UB_OTA_KEY "${PROJECT_CERT_DIR}/ota_key_prod.pub")
 else ()
+    set(UB_ENV "dev")
     set(UB_OTA_KEY "${PROJECT_CERT_DIR}/ota_key.pub")
 endif ()
 if (NOT EXISTS "${UB_OTA_KEY}")
@@ -24,4 +26,5 @@ set(COMPONENT_EMBED_TXTFILES "${CA_CERT_FILE} ${UB_OTA_KEY}")
 set(COMPONENT_REQUIRES ubirch-protocol)
 set(COMPONENT_PRIV_REQUIRES bootloader_support app_update esp_http_client mbedtls nvs_flash)
 register_component()
-component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${PROJECT_NAME}.bin\")
+
+component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${UB_ENV}/${PROJECT_NAME}.bin\")
