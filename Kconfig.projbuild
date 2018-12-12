@@ -2,7 +2,7 @@ menu "UBIRCH"
 
 config FIRMWARE_UPGRADE_BASE_URL
     string "Firmware upgrade base URL"
-    default "https://fw.prod.ubirch.com"
+    default "https://s3-eu-west-1.amazonaws.com/fw.prod.ubirch.com"
     help
         Base URL of server which hosts the firmware image.
 
