@@ -1,3 +1,5 @@
+![ubirch logo](https://ubirch.de/wp-content/uploads/2018/10/cropped-uBirch_Logo.png)
+
 # ESP32 OTA component
 
 This is a component for using OTA on the ESP32 and IDF.
