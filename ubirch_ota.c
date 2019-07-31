@@ -48,7 +48,7 @@
 
 #include "ubirch_ota.h"
 
-#define LOG_LOCAL_LEVEL ESP_LOG_DEBUG
+//#define LOG_LOCAL_LEVEL ESP_LOG_DEBUG
 #define BUFFSIZE 1024
 
 #if CONFIG_FIRMWARE_FILE_OVERRIDE == 'y'
