@@ -29,3 +29,4 @@ with open(sys.argv[2], "rb") as pubk:
             signature = fw_s.read(64)
             print("signature: " + bytes.decode(binascii.hexlify(signature)))
             vk.verify(signature, digest)
+            print("OK")
