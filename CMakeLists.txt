@@ -33,4 +33,4 @@ set(COMPONENT_PRIV_REQUIRES
         )
 register_component()
 
-#component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${UB_ENV}/${PROJECT_NAME}.bin\")
+component_compile_options(-DUBIRCH_FIRMWARE_FILE=\"${UB_ENV}/${PROJECT_NAME}.bin\")
