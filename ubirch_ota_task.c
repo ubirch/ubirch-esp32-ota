@@ -28,7 +28,7 @@
 #include <freertos/task.h>
 
 #include <ubirch_ota.h>
-#include <tcpip_adapter.h>
+#include <esp_netif.h>
 #include <esp_log.h>
 #include "ubirch_ota_task.h"
 
